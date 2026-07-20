@@ -12,11 +12,17 @@ with explicit uncertainty, and recommends an operating route
 ## Monorepo
 
 ```
-apps/web            Next.js 15 — five-layer FYUL economics bridge (first surface)
-apps/api            Fastify — layer-tagged responses, TERMS_UNMAPPED guard
-packages/economics  The five economic layers + identity functions + golden tests
+apps/web            Next.js 15 — economics bridge, EV-ranked portfolio, title
+                    workspace with scenario lab + sensitivity panel
+apps/api            Fastify — portfolio ranking, scenario preview, sensitivity,
+                    CSV export; layer-tagged responses, TERMS_UNMAPPED guard
+packages/economics  Five economic layers, identity functions, waterfall,
+                    scenario engine, sensitivity/break-evens, golden tests
+packages/demo-data  Shared synthetic opportunities (all titles/terms fictional)
 packages/db         Postgres 16 migrations (schema per build-spec §4)
-services/forecast   Python FastAPI — forecast contract (P10/P50/P90, OOD abstention)
+services/forecast   Python FastAPI — forecast contract (P10/P50/P90, OOD
+                    abstention) + routing prototype (contribution − service-risk
+                    penalties, exclusions with reasons)
 config/             Named assumption placeholders (no invented business values)
 ```
 

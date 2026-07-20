@@ -18,6 +18,7 @@ from .contracts import (
     WeeklyQuantiles,
     confidence_from_distance,
 )
+from .routing import RouteCandidate, RoutingRecommendation, RoutingWeights, recommend_route
 
 META = {
     "metric_version": "metric-v0.placeholder",
@@ -89,3 +90,15 @@ def forecast(req: ForecastRequest) -> ForecastResponse:
         confidence=confidence,
         **META,
     )
+
+
+class RoutingRequest(BaseModel):
+    opportunity_id: str
+    candidates: list[RouteCandidate]
+    # No default weights exist — callers must supply Phase-0-approved values.
+    weights: RoutingWeights
+
+
+@app.post("/v1/routing", response_model=RoutingRecommendation)
+def routing(req: RoutingRequest) -> RoutingRecommendation:
+    return recommend_route(req.candidates, req.weights)
