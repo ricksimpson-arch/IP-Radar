@@ -25,3 +25,12 @@ export {
   type AllLayers,
 } from "./waterfall.js";
 export { applyScenario, validateScenarioDeltas, type ScenarioDeltas } from "./scenario.js";
+export {
+  computeSensitivity,
+  perturbDriver,
+  SENSITIVITY_DRIVERS,
+  NOT_MODELED_DRIVERS,
+  type SensitivityDriver,
+  type DriverSensitivity,
+  type SensitivityReport,
+} from "./sensitivity.js";

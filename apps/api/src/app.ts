@@ -2,6 +2,7 @@ import Fastify, { type FastifyInstance } from "fastify";
 import {
   EconomicLayer,
   applyScenario,
+  computeSensitivity,
   computeWaterfall,
   type ScenarioDeltas,
   type WaterfallResult,
@@ -122,6 +123,20 @@ export function buildApp(): FastifyInstance {
       });
     }
   );
+
+  /**
+   * Sensitivity (§5): top-5 contribution drivers + break-even thresholds,
+   * computed by re-running the pure identities under perturbed inputs.
+   * Unmodeled spec drivers are disclosed, not silently dropped.
+   */
+  app.get<{ Params: { id: string } }>("/opportunities/:id/sensitivity", async (request, reply) => {
+    const opportunity = getDemoOpportunity(request.params.id);
+    if (!opportunity) {
+      return reply.status(404).send({ error: "opportunity not found", ...META });
+    }
+    const report = computeSensitivity(opportunity.economics);
+    return reply.send({ ...report, ...META });
+  });
 
   /**
    * Portfolio CSV export (§6.7). Assumption/version metadata rides along as
