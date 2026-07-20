@@ -1,0 +1,28 @@
+[project]
+name = "ip-radar-forecast"
+version = "0.1.0"
+description = "Forecast service: rights-win/timing models, conditional demand, uncertainty, routing (build-spec §5)"
+requires-python = ">=3.11"
+dependencies = [
+    "fastapi>=0.115",
+    "pydantic>=2.9",
+    "uvicorn>=0.32",
+]
+
+[project.optional-dependencies]
+dev = [
+    "httpx>=0.27",
+    "pytest>=8.3",
+]
+# Modeling deps (pandas/polars, scikit-learn, lifelines, scipy) are added in
+# Phase 2 when the first models land — not before (ship baselines first).
+
+[build-system]
+requires = ["setuptools>=69"]
+build-backend = "setuptools.build_meta"
+
+[tool.setuptools.packages.find]
+include = ["app*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

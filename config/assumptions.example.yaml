@@ -1,0 +1,33 @@
+# Placeholder assumptions — every value here is a clearly named config
+# placeholder, NOT a real business number (build-spec §9: never invent take
+# rates, deal terms, or provider costs). Copy to config/assumptions.yaml
+# (gitignored) and fill with Finance-approved values during Phase 0.
+# Each unresolved value is tracked in OPEN_QUESTIONS.md.
+
+reconciliation:
+  # Tolerance for sales-bridge reconciliation vs Finance-approved totals.
+  # Set in Phase 0 sign-off — reconciliation failure blocks publication.
+  tolerance_bps: PLACEHOLDER__SET_IN_PHASE_0
+
+data_freshness:
+  # Provider cost/capacity rows older than this exclude the route with a warning.
+  provider_capacity_sla_days: PLACEHOLDER__SET_IN_PHASE_0
+
+forecast:
+  horizon_weeks: 156
+  # Confidence thresholds on distance-from-training-support; placeholders
+  # until Phase 2 backtesting calibrates them (OPEN_QUESTIONS #6).
+  confidence_distance_thresholds:
+    high_below: 0.5
+    medium_below: 1.0
+    low_below: 2.0 # >= this => out_of_distribution, forecast abstains
+
+pipeline_ev:
+  # Launch-delay discount curve shape — Finance/BD to define in Phase 0.
+  delay_discount_curve: PLACEHOLDER__SET_IN_PHASE_0
+
+routing:
+  # Penalty weights for the routing objective (delivery-delay, quality-miss,
+  # stockout, compliance, provider-concentration). Lowest unit cost is NOT
+  # automatically optimal.
+  penalty_weights: PLACEHOLDER__SET_IN_PHASE_0

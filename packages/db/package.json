@@ -1,0 +1,11 @@
+{
+  "name": "@ip-radar/db",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "typecheck": "echo \"sql only — nothing to typecheck\"",
+    "lint": "echo \"sql lint TBD (Phase 0: pick sqlfluff or squawk)\"",
+    "test": "echo \"db tests run against a migrated Postgres in CI once a database is provisioned (Phase 1)\""
+  }
+}

@@ -1,0 +1,21 @@
+{
+  "name": "ip-radar",
+  "private": true,
+  "version": "0.1.0",
+  "description": "FYUL Entertainment Merch Revenue Platform — internal decision platform for IP licensing opportunities",
+  "scripts": {
+    "build": "turbo run build",
+    "typecheck": "turbo run typecheck",
+    "lint": "turbo run lint",
+    "test": "turbo run test",
+    "check:layers": "node scripts/check-layer-tagging.mjs",
+    "ci": "turbo run typecheck lint test && node scripts/check-layer-tagging.mjs"
+  },
+  "devDependencies": {
+    "turbo": "^2.5.0"
+  },
+  "packageManager": "pnpm@10.33.0",
+  "engines": {
+    "node": ">=22"
+  }
+}

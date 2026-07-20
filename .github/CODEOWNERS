@@ -1,0 +1,4 @@
+# Any change to the economics identities or their golden fixtures requires
+# Finance-owner review (build-spec §8). Replace the placeholder with the real
+# Finance owner's GitHub handle during Phase 0 (OPEN_QUESTIONS #3).
+/packages/economics/ @ricksimpson-arch

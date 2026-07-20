@@ -1,0 +1,129 @@
+{
+  "$comment": "Golden fixtures: hand-computed five-layer waterfalls. All money is integer cents. Any change to packages/economics requires updating these fixtures AND Finance-owner review (see CODEOWNERS). Values are synthetic examples — not real deal terms.",
+  "launches": [
+    {
+      "id": "fixture-a-space-opera-reboot",
+      "description": "Royalty on store net + fixed service fee; full waterfall.",
+      "currency": "USD",
+      "inputs": {
+        "orders": 12400,
+        "realizedAovCents": 3250,
+        "discountsCents": 2015000,
+        "cancellationsCents": 806000,
+        "refundsCents": 1612000,
+        "chargebacksCents": 161200,
+        "excludedTaxesDutiesCents": 3224000,
+        "agreement": {
+          "agreementId": "AGR-FIXTURE-A",
+          "version": 3,
+          "currency": "USD",
+          "components": [
+            { "kind": "ROYALTY", "rateBps": 1200, "baseLayer": "STORE_NET_SALES" },
+            { "kind": "SERVICE_FEE_FIXED", "amountCents": 500000 }
+          ]
+        },
+        "variableCostsCents": 1000000,
+        "committedLaunchCostsCents": 750000,
+        "guaranteeExposureCents": 250000,
+        "writeDownsCents": 100000,
+        "pRightsWin": 0.6,
+        "delayDiscount": 0.9,
+        "capacityFeasibility": 0.95
+      },
+      "expected": {
+        "CONSUMER_GMS": 40300000,
+        "STORE_NET_SALES": 32481800,
+        "FYUL_RECOGNIZED": 4397816,
+        "FYUL_CONTRIBUTION": 2297816,
+        "PIPELINE_EV": 1178780
+      },
+      "handComputation": {
+        "CONSUMER_GMS": "12400 × 3250 = 40300000",
+        "STORE_NET_SALES": "40300000 − 2015000 − 806000 − 1612000 − 161200 − 3224000 = 32481800",
+        "FYUL_RECOGNIZED": "royalty 12.00% × 32481800 = 3897816; + fixed 500000 = 4397816",
+        "FYUL_CONTRIBUTION": "4397816 − 1000000 − 750000 − 250000 − 100000 = 2297816",
+        "PIPELINE_EV": "2297816 × 0.6 × 0.9 × 0.95 = 1178779.608 → 1178780"
+      }
+    },
+    {
+      "id": "fixture-b-heist-anime",
+      "description": "Royalty on consumer GMS base; zero chargebacks and write-downs; exact EV (no rounding).",
+      "currency": "USD",
+      "inputs": {
+        "orders": 5000,
+        "realizedAovCents": 2000,
+        "discountsCents": 500000,
+        "cancellationsCents": 200000,
+        "refundsCents": 300000,
+        "chargebacksCents": 0,
+        "excludedTaxesDutiesCents": 800000,
+        "agreement": {
+          "agreementId": "AGR-FIXTURE-B",
+          "version": 1,
+          "currency": "USD",
+          "components": [
+            { "kind": "ROYALTY", "rateBps": 800, "baseLayer": "CONSUMER_GMS" }
+          ]
+        },
+        "variableCostsCents": 300000,
+        "committedLaunchCostsCents": 100000,
+        "guaranteeExposureCents": 150000,
+        "writeDownsCents": 0,
+        "pRightsWin": 0.35,
+        "delayDiscount": 0.85,
+        "capacityFeasibility": 1.0
+      },
+      "expected": {
+        "CONSUMER_GMS": 10000000,
+        "STORE_NET_SALES": 8200000,
+        "FYUL_RECOGNIZED": 800000,
+        "FYUL_CONTRIBUTION": 250000,
+        "PIPELINE_EV": 74375
+      },
+      "handComputation": {
+        "CONSUMER_GMS": "5000 × 2000 = 10000000",
+        "STORE_NET_SALES": "10000000 − 500000 − 200000 − 300000 − 0 − 800000 = 8200000",
+        "FYUL_RECOGNIZED": "royalty 8.00% × 10000000 (GMS base) = 800000",
+        "FYUL_CONTRIBUTION": "800000 − 300000 − 100000 − 150000 − 0 = 250000",
+        "PIPELINE_EV": "250000 × 0.35 × 0.85 × 1.0 = 74375 (exact)"
+      }
+    }
+  ],
+  "unmappedCases": [
+    {
+      "id": "fixture-c-unknown-component-kind",
+      "description": "Component kind not in the mapped list → TERMS_UNMAPPED, never estimated.",
+      "agreement": {
+        "agreementId": "AGR-FIXTURE-C",
+        "version": 2,
+        "currency": "USD",
+        "components": [
+          { "kind": "ROYALTY", "rateBps": 1000, "baseLayer": "STORE_NET_SALES" },
+          { "kind": "REBATE_KICKER", "amountCents": 123400 }
+        ]
+      }
+    },
+    {
+      "id": "fixture-d-missing-rate",
+      "description": "Royalty component missing rateBps → TERMS_UNMAPPED.",
+      "agreement": {
+        "agreementId": "AGR-FIXTURE-D",
+        "version": 1,
+        "currency": "USD",
+        "components": [
+          { "kind": "ROYALTY", "baseLayer": "STORE_NET_SALES" }
+        ]
+      }
+    },
+    {
+      "id": "fixture-e-empty-components",
+      "description": "Agreement exists but has no components → TERMS_UNMAPPED.",
+      "agreement": {
+        "agreementId": "AGR-FIXTURE-E",
+        "version": 1,
+        "currency": "USD",
+        "components": []
+      }
+    }
+  ]
+}
