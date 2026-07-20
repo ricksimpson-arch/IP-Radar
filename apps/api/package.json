@@ -11,6 +11,7 @@
     "lint": "eslint src test"
   },
   "dependencies": {
+    "@ip-radar/demo-data": "workspace:*",
     "@ip-radar/economics": "workspace:*",
     "fastify": "^5.2.0"
   },

@@ -14,6 +14,9 @@ importers:
 
   apps/api:
     dependencies:
+      '@ip-radar/demo-data':
+        specifier: workspace:*
+        version: link:../../packages/demo-data
       '@ip-radar/economics':
         specifier: workspace:*
         version: link:../../packages/economics
@@ -42,6 +45,9 @@ importers:
 
   apps/web:
     dependencies:
+      '@ip-radar/demo-data':
+        specifier: workspace:*
+        version: link:../../packages/demo-data
       '@ip-radar/economics':
         specifier: workspace:*
         version: link:../../packages/economics
@@ -87,6 +93,25 @@ importers:
         version: 8.65.0(eslint@9.39.5(jiti@1.21.7))(typescript@5.9.3)
 
   packages/db: {}
+
+  packages/demo-data:
+    dependencies:
+      '@ip-radar/economics':
+        specifier: workspace:*
+        version: link:../economics
+    devDependencies:
+      '@eslint/js':
+        specifier: ^9.20.0
+        version: 9.39.5
+      eslint:
+        specifier: ^9.20.0
+        version: 9.39.5(jiti@1.21.7)
+      typescript:
+        specifier: ^5.7.0
+        version: 5.9.3
+      typescript-eslint:
+        specifier: ^8.24.0
+        version: 8.65.0(eslint@9.39.5(jiti@1.21.7))(typescript@5.9.3)
 
   packages/economics:
     devDependencies:

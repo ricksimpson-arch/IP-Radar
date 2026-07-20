@@ -1,17 +1,11 @@
-import {
-  EconomicLayer,
-  fyulContribution,
-  fyulRecognized,
-  gms,
-  pipelineEv,
-  storeNetSales,
-  type LayeredMoney,
-} from "@ip-radar/economics";
+import Link from "next/link";
+import { EconomicLayer, computeWaterfall, type LayeredMoney } from "@ip-radar/economics";
+import { getDemoOpportunity } from "@ip-radar/demo-data";
 
 /**
  * FYUL economics bridge (§6.1) — the reference implementation of the
- * five-layer rule. Currently renders the synthetic demo fixture; real data
- * arrives in Phase 1 via the API. Every figure on screen is layer-tagged.
+ * five-layer rule. Renders the synthetic demo fixture; every figure on
+ * screen is layer-tagged.
  */
 const LAYER_LABELS: Record<EconomicLayer, string> = {
   [EconomicLayer.CONSUMER_GMS]: "Consumer GMS",
@@ -21,59 +15,34 @@ const LAYER_LABELS: Record<EconomicLayer, string> = {
   [EconomicLayer.PIPELINE_EV]: "Pipeline Expected Value",
 };
 
-function demoBridge(): LayeredMoney[] {
-  const gmsValue = gms({ orders: 12_400, realizedAovCents: 3_250, currency: "USD" });
-  const netValue = storeNetSales({
-    gms: gmsValue,
-    discountsCents: 2_015_000,
-    cancellationsCents: 806_000,
-    refundsCents: 1_612_000,
-    chargebacksCents: 161_200,
-    excludedTaxesDutiesCents: 3_224_000,
-  });
-  const recognized = fyulRecognized({
-    agreement: {
-      agreementId: "AGR-DEMO-1",
-      version: 3,
-      currency: "USD",
-      components: [
-        { kind: "ROYALTY", rateBps: 1_200, baseLayer: EconomicLayer.STORE_NET_SALES },
-        { kind: "SERVICE_FEE_FIXED", amountCents: 500_000 },
-      ],
-    },
-    bases: {
-      [EconomicLayer.CONSUMER_GMS]: gmsValue,
-      [EconomicLayer.STORE_NET_SALES]: netValue,
-    },
-  });
-  const contribution = fyulContribution({
-    recognized,
-    variableCostsCents: 1_000_000,
-    committedLaunchCostsCents: 750_000,
-    guaranteeExposureCents: 250_000,
-    writeDownsCents: 100_000,
-  });
-  const ev = pipelineEv({
-    pRightsWin: 0.6,
-    conditionalContribution: contribution,
-    delayDiscount: 0.9,
-    capacityFeasibility: 0.95,
-  });
-  return [gmsValue, netValue, recognized, contribution, ev];
-}
-
 function formatUsd(m: LayeredMoney): string {
   return (m.amountCents / 100).toLocaleString("en-US", { style: "currency", currency: m.currency });
 }
 
 export default function EconomicsBridgePage() {
-  const bridge = demoBridge();
-  const first = bridge[0];
+  const opportunity = getDemoOpportunity("demo-mapped");
+  if (!opportunity) throw new Error("demo fixture missing");
+  const result = computeWaterfall(opportunity.economics);
+  if (result.status !== "OK") throw new Error("demo fixture must have mapped terms");
+
+  const bridge = [
+    result.layers[EconomicLayer.CONSUMER_GMS],
+    result.layers[EconomicLayer.STORE_NET_SALES],
+    result.layers[EconomicLayer.FYUL_RECOGNIZED],
+    result.layers[EconomicLayer.FYUL_CONTRIBUTION],
+    result.layers[EconomicLayer.PIPELINE_EV],
+  ];
+  const gmsCents = bridge[0]!.amountCents;
+
   return (
     <main className="mx-auto max-w-3xl px-6 py-12">
       <h1 className="text-2xl font-semibold">FYUL Economics Bridge</h1>
       <p className="mt-2 text-sm text-slate-600">
-        Synthetic demo title — five economic layers, never blended. Real data lands in Phase 1.
+        {opportunity.title} — five economic layers, never blended.{" "}
+        <Link href={`/titles/${opportunity.id}`} className="underline">
+          Open the title workspace
+        </Link>{" "}
+        to run scenarios.
       </p>
       <ol className="mt-8 space-y-2" aria-label="Five-layer economics waterfall">
         {bridge.map((m) => (
@@ -82,11 +51,11 @@ export default function EconomicsBridgePage() {
             className="flex items-baseline justify-between rounded-lg border border-slate-200 bg-white px-4 py-3"
           >
             <span className="font-medium">{LAYER_LABELS[m.layer]}</span>
-            <span className="tabular-nums" aria-label={`${LAYER_LABELS[m.layer]}: ${formatUsd(m)}`}>
+            <span className="tabular-nums">
               {formatUsd(m)}
-              {first && m.layer !== first.layer ? (
+              {m.layer !== EconomicLayer.CONSUMER_GMS ? (
                 <span className="ml-3 text-xs text-slate-500">
-                  {((m.amountCents / first.amountCents) * 100).toFixed(1)}% of GMS
+                  {((m.amountCents / gmsCents) * 100).toFixed(1)}% of GMS
                 </span>
               ) : null}
             </span>

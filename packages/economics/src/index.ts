@@ -17,3 +17,11 @@ export {
   isRecognizedComponentKind,
 } from "./agreements.js";
 export { gms, storeNetSales, fyulRecognized, fyulContribution, pipelineEv } from "./identities.js";
+export {
+  computeWaterfall,
+  type TitleEconomicsInputs,
+  type WaterfallResult,
+  type StoreLayers,
+  type AllLayers,
+} from "./waterfall.js";
+export { applyScenario, validateScenarioDeltas, type ScenarioDeltas } from "./scenario.js";

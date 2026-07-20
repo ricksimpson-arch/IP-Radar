@@ -11,6 +11,7 @@
     "test": "echo \"no web tests yet\""
   },
   "dependencies": {
+    "@ip-radar/demo-data": "workspace:*",
     "@ip-radar/economics": "workspace:*",
     "next": "^15.3.0",
     "react": "^19.0.0",
