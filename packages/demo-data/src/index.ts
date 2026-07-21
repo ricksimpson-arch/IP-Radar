@@ -1,4 +1,9 @@
-import { EconomicLayer, type TitleEconomicsInputs } from "@ip-radar/economics";
+import {
+  EconomicLayer,
+  type RouteCandidate,
+  type RoutingWeights,
+  type TitleEconomicsInputs,
+} from "@ip-radar/economics";
 
 /**
  * Synthetic demo opportunities shared by the API and web surfaces until real
@@ -216,4 +221,86 @@ export function listDemoOpportunities(): readonly DemoOpportunity[] {
 
 export function getDemoOpportunity(id: string): DemoOpportunity | undefined {
   return OPPORTUNITIES.find((o) => o.id === id);
+}
+
+/**
+ * DEMO routing penalty weights. These are synthetic placeholders for the
+ * demo surfaces only — real weights are a Phase 0 Finance/Ops sign-off
+ * (config/assumptions.example.yaml `routing.penalty_weights`), and the
+ * routing API deliberately has no defaults.
+ */
+export const DEMO_ROUTING_WEIGHTS: RoutingWeights = {
+  delayPenaltyCentsPerDay: 50_000,
+  qualityMissPenaltyCents: 2_000_000,
+  stockoutPenaltyCents: 1_500_000,
+  concentrationPenaltyCents: 800_000,
+  providerDataFreshnessSlaDays: 14,
+};
+
+/**
+ * Synthetic route candidates for a title, scaled from its conditional
+ * contribution. Includes one deliberately infeasible route per exclusion
+ * class so the surfaces exercise "excluded with reasons".
+ */
+export function buildDemoRouteCandidates(contributionCents: number): RouteCandidate[] {
+  const scale = (f: number) => Math.round(contributionCents * f);
+  return [
+    {
+      routeId: "snow-full-service",
+      providers: ["snow"],
+      expectedContributionCents: scale(0.96),
+      unitCostCents: 1_100,
+      capacityUnitsPerWeek: 12_000,
+      requiredUnitsPerWeek: 5_000,
+      complianceEligible: true,
+      dataAgeDays: 2,
+      expectedDelayDays: 1,
+      qualityScore: 0.97,
+      stockoutRisk: 0.03,
+      providerConcentration: 0.4,
+    },
+    {
+      routeId: "printful-led",
+      providers: ["printful"],
+      expectedContributionCents: scale(1.0),
+      unitCostCents: 850,
+      capacityUnitsPerWeek: 9_000,
+      requiredUnitsPerWeek: 5_000,
+      complianceEligible: true,
+      dataAgeDays: 5,
+      expectedDelayDays: 4,
+      qualityScore: 0.9,
+      stockoutRisk: 0.1,
+      providerConcentration: 0.7,
+    },
+    {
+      routeId: "printify-led",
+      providers: ["printify"],
+      expectedContributionCents: scale(1.04),
+      unitCostCents: 600,
+      capacityUnitsPerWeek: 8_000,
+      requiredUnitsPerWeek: 5_000,
+      complianceEligible: true,
+      dataAgeDays: 21, // past the demo freshness SLA → excluded with reason
+      expectedDelayDays: 9,
+      qualityScore: 0.78,
+      stockoutRisk: 0.3,
+      providerConcentration: 0.9,
+    },
+    {
+      routeId: "hybrid-printful-printify",
+      providers: ["printful", "printify"],
+      expectedContributionCents: scale(0.98),
+      unitCostCents: 780,
+      capacityUnitsPerWeek: 14_000,
+      requiredUnitsPerWeek: 5_000,
+      complianceEligible: false, // → excluded with reason
+      complianceReason: "secondary facility missing market certificate (demo)",
+      dataAgeDays: 4,
+      expectedDelayDays: 3,
+      qualityScore: 0.92,
+      stockoutRisk: 0.06,
+      providerConcentration: 0.55,
+    },
+  ];
 }

@@ -26,6 +26,16 @@ export {
 } from "./waterfall.js";
 export { applyScenario, validateScenarioDeltas, type ScenarioDeltas } from "./scenario.js";
 export {
+  recommendRoute,
+  scoreRoute,
+  exclusionReasons,
+  type RouteCandidate,
+  type RoutingWeights,
+  type ScoredRoute,
+  type ExcludedRoute,
+  type RoutingRecommendation,
+} from "./routing.js";
+export {
   computeSensitivity,
   perturbDriver,
   SENSITIVITY_DRIVERS,

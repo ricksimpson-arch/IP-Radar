@@ -13,16 +13,21 @@ with explicit uncertainty, and recommends an operating route
 
 ```
 apps/web            Next.js 15 — economics bridge, EV-ranked portfolio, title
-                    workspace with scenario lab + sensitivity panel
+                    workspace (scenario lab, sensitivity, routing), governance
 apps/api            Fastify — portfolio ranking, scenario preview, sensitivity,
-                    CSV export; layer-tagged responses, TERMS_UNMAPPED guard
+                    RBAC-redacted agreement terms, governance snapshot, CSV
+                    export; layer-tagged responses, TERMS_UNMAPPED guard
 packages/economics  Five economic layers, identity functions, waterfall,
-                    scenario engine, sensitivity/break-evens, golden tests
-packages/demo-data  Shared synthetic opportunities (all titles/terms fictional)
+                    scenario engine, sensitivity/break-evens, routing scorer,
+                    golden tests
+packages/demo-data  Shared synthetic opportunities + route candidates (all
+                    titles/terms fictional)
 packages/db         Postgres 16 migrations (schema per build-spec §4)
-services/forecast   Python FastAPI — forecast contract (P10/P50/P90, OOD
-                    abstention) + routing prototype (contribution − service-risk
-                    penalties, exclusions with reasons)
+services/forecast   Python FastAPI — cohort-median demand baseline (abstains
+                    under 3 comparables / OOD), stage-conversion P(win)
+                    baseline, Brier + reliability, backtest metrics (WAPE/MAE/
+                    bias/coverage), leakage guard, routing optimizer,
+                    reproducible forecast runs
 config/             Named assumption placeholders (no invented business values)
 ```
 
@@ -53,6 +58,23 @@ cd services/forecast
 pip install -e ".[dev]" && pytest -q
 uvicorn app.main:app --port 8000
 ```
+
+## Status vs the build spec
+
+| Spec area | State |
+|---|---|
+| §2 five-layer rule + identities | Done — golden-tested to the cent, CI-guarded repo-wide |
+| §4 schema | Migration written; DB not provisioned yet |
+| §5 rights baseline | Stage-conversion baseline + Brier/reliability done; calibrated classifier & survival model need real CRM history |
+| §5 demand baseline | Cohort-median with partial pooling + cold-start abstention done; ML promotion gated on backtests |
+| §5 sensitivity | Done (top-5 drivers, break-evens; unmodeled drivers disclosed) |
+| §5 routing | Prototype done (TS + Python, rule-identical); real weights await Phase 0 |
+| §6 surfaces | Bridge, portfolio, title workspace, scenario lab, routing view, governance, CSV exports done; saved/shareable scenarios need the DB |
+| §8 testing | Golden, access/RBAC, reproducibility, leakage, calibration-metric, backtest-metric tests done; reconciliation tests need Finance-approved actuals |
+| Auth/RLS, scheduled refresh, model registry | Phase 3 — blocked on SSO choice, DB, and real sources |
+
+Remaining work is blocked on Phase 0 answers (see `OPEN_QUESTIONS.md`) and
+real data access — by design, none of it is guessable.
 
 ## Project docs
 

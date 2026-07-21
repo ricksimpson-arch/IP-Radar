@@ -3,6 +3,7 @@ import { notFound } from "next/navigation";
 import { getDemoOpportunity, listDemoOpportunities } from "@ip-radar/demo-data";
 import { ScenarioLab } from "./scenario-lab";
 import { SensitivityPanel } from "./sensitivity-panel";
+import { RoutingPanel } from "./routing-panel";
 
 /**
  * Title workspace (§6.3): baseline waterfall + scenario lab. Forecast curves,
@@ -33,6 +34,7 @@ export default async function TitlePage({ params }: { params: Promise<{ id: stri
         baseline={opportunity.economics}
       />
       <SensitivityPanel economics={opportunity.economics} />
+      <RoutingPanel economics={opportunity.economics} />
     </main>
   );
 }

@@ -8,6 +8,7 @@ import {
   type WaterfallResult,
 } from "@ip-radar/economics";
 import { getDemoOpportunity, listDemoOpportunities } from "@ip-radar/demo-data";
+import { agreementViewFor, parseRole } from "./roles.js";
 
 /**
  * Every API response that carries forecast or economic figures includes this
@@ -123,6 +124,64 @@ export function buildApp(): FastifyInstance {
       });
     }
   );
+
+  /**
+   * Agreement terms (§3 RBAC): contract terms are confidential. The demo
+   * role comes from the x-demo-role header until SSO lands (Phase 3);
+   * missing/unknown roles get the redacted view — default-deny.
+   */
+  app.get<{ Params: { id: string } }>("/opportunities/:id/agreement", async (request, reply) => {
+    const opportunity = getDemoOpportunity(request.params.id);
+    if (!opportunity) {
+      return reply.status(404).send({ error: "opportunity not found", ...META });
+    }
+    if (opportunity.economics.agreement === null) {
+      return reply.send({ status: "NO_AGREEMENT_ON_FILE", agreement: null, ...META });
+    }
+    const role = parseRole(request.headers["x-demo-role"] as string | undefined);
+    return reply.send({
+      status: "OK",
+      role: role ?? "unauthenticated",
+      agreement: agreementViewFor(opportunity.economics.agreement, role),
+      ...META,
+    });
+  });
+
+  /**
+   * Governance snapshot (§6.6): versions, validation posture, and known
+   * gaps. Everything here is real state — nothing is a vanity metric.
+   */
+  app.get("/governance", async () => {
+    const opportunities = listDemoOpportunities();
+    const unmapped = opportunities.filter(
+      (o) => computeWaterfall(o.economics).status === "TERMS_UNMAPPED"
+    );
+    return {
+      versions: META,
+      data: {
+        source: "synthetic demo fixtures — no real systems connected (Phase 0)",
+        opportunities: opportunities.length,
+        unmappedTerms: unmapped.map((o) => o.id),
+      },
+      models: {
+        promoted: [],
+        available: [
+          "model-v0.stub (deterministic placeholder)",
+          "model-v0.cohort-median-baseline (forecast service, requires >= 3 comparables)",
+          "stage-conversion baseline for P(rights win) (forecast service)",
+        ],
+        validation:
+          "no backtests run yet — metric definitions (WAPE/MAE/bias/coverage, Brier, reliability) are locked and tested in services/forecast",
+      },
+      overrides: {
+        count: 0,
+        note: "override capture lands with the Postgres-backed forecast_runs/overrides tables (Phase 3)",
+      },
+      accessControl:
+        "demo header-based roles; confidential terms redacted by default — SSO + RLS in Phase 3",
+      ...META,
+    };
+  });
 
   /**
    * Sensitivity (§5): top-5 contribution drivers + break-even thresholds,

@@ -45,6 +45,14 @@ class ComparableLaunch(BaseModel):
     dimensions: list[str]  # e.g. genre, audience, rightsholder, release type
 
 
+class ComparableCurve(BaseModel):
+    """A comparable launch's realized weekly P50 curve, supplied by the
+    caller until the warehouse serves comparables directly."""
+
+    launch_id: str
+    weekly_p50_cents: list[int]
+
+
 class ForecastResponse(BaseModel):
     opportunity_id: str
     layer: EconomicLayer
@@ -55,7 +63,9 @@ class ForecastResponse(BaseModel):
     confidence: ConfidenceLabel
     abstained: bool = False
     abstention_reason: str | None = None
-    # Reproducibility envelope — every response carries pinned versions.
+    # Reproducibility envelope — every response carries pinned versions and
+    # a run id that can regenerate the identical forecast.
+    forecast_run_id: str
     metric_version: str
     model_version: str
     data_snapshot_id: str

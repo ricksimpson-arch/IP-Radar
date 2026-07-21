@@ -23,6 +23,9 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
             <a className="hover:underline" href="/portfolio">
               Portfolio
             </a>
+            <a className="hover:underline" href="/governance">
+              Governance
+            </a>
             <span className="ml-auto text-xs text-slate-500">
               synthetic demo data · no real IPs or deal terms
             </span>
