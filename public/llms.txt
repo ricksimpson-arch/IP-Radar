@@ -1,0 +1,32 @@
+# Market Analytica
+
+Market Analytica designs custom market-research, forecasting, and
+decision-intelligence platforms. Companies engage us to rank opportunities,
+forecast demand, evaluate risk, monitor competitors, and turn scattered
+research into clear, recurring business decisions.
+
+## Capabilities
+
+- Market Opportunity Scoring: rank products, markets, or investments using custom criteria — https://marketanalytica.com/capabilities/market-opportunity-scoring
+- Forecasting & Scenarios: model likely outcomes, risks, and future market changes — https://marketanalytica.com/capabilities/forecasting-scenarios
+- Competitive Intelligence: compare competitors, pricing, positioning, and whitespace — https://marketanalytica.com/capabilities/competitive-intelligence
+- Executive Dashboards: convert complex research into decision-making tools — https://marketanalytica.com/capabilities/executive-dashboards
+- Data Integration: combine company data with external research and market signals — https://marketanalytica.com/capabilities/data-integration
+- Custom Analytics Systems: platforms built around each client's workflow — https://marketanalytica.com/capabilities/custom-analytics-systems
+
+## Key pages
+
+- Home: https://marketanalytica.com/
+- LootSignal case study (52 entertainment franchises scored across 7 dimensions): https://marketanalytica.com/work/lootsignal
+- Method (four phases): https://marketanalytica.com/method
+- Analytical standards: https://marketanalytica.com/method/standards
+- Engagement bands: https://marketanalytica.com/engagements
+- Interactive project planner: https://marketanalytica.com/planner
+- Apply for a custom build: https://marketanalytica.com/apply
+- Security & data handling: https://marketanalytica.com/security
+
+## Notes
+
+LootSignal is an independent research and analysis system. Franchise and brand
+names appear as subjects of market analysis; inclusion implies no affiliation
+with, endorsement by, or licensing rights from any rights holder.

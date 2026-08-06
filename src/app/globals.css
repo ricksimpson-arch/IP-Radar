@@ -1,0 +1,122 @@
+@import "tailwindcss";
+@import "../styles/tokens.css";
+
+@theme {
+  --color-ink-900: #070b14;
+  --color-ink-800: #0c1322;
+  --color-ink-700: #131c2e;
+  --color-ink-600: #1d2941;
+  --color-line: #263349;
+  --color-paper: #f4f7fb;
+  --color-mute: #9aa9c0;
+  --color-faint: #63728a;
+  --color-signal: #35f0a0;
+  --color-signal-d: #12b978;
+  --color-cyan: #4cc9f0;
+  --color-amber: #f2b441;
+  --color-coral: #ff6b6b;
+
+  --font-display: var(--font-display);
+  --font-body: var(--font-body);
+  --font-data: var(--font-data);
+
+  --radius-sm: 6px;
+  --radius-md: 10px;
+  --radius-lg: 16px;
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: var(--ma-ink-900);
+  color: var(--ma-paper);
+  font-family: var(--font-body);
+  font-size: 1.0625rem;
+  line-height: 1.65;
+  font-feature-settings: "cv05", "ss01", "tnum";
+  -webkit-font-smoothing: antialiased;
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: -0.02em;
+  line-height: 1.12;
+}
+
+/* Visible focus per SPEC.md §19: 2px signal ring, 2px offset. Focus is the
+   single permitted "active-state indicator" role for --ma-signal. */
+:focus-visible {
+  outline: 2px solid var(--ma-signal);
+  outline-offset: 2px;
+}
+
+::selection {
+  background: var(--ma-ink-600);
+}
+
+/* Model-output numbers are always mono (SPEC.md §7.2). */
+.data-figure {
+  font-family: var(--font-data);
+  font-variant-numeric: tabular-nums;
+}
+
+.eyebrow-label {
+  font-size: 0.8125rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section-pad {
+  padding-top: clamp(5rem, 10vw, 8rem);
+  padding-bottom: clamp(5rem, 10vw, 8rem);
+}
+
+.container-site {
+  max-width: 1240px;
+  margin-inline: auto;
+  padding-inline: 24px;
+}
+
+@media (min-width: 768px) {
+  .container-site {
+    padding-inline: 32px;
+  }
+}
+
+/* Entrance animation — one orchestrated stagger per section (SPEC.md §7.4). */
+@keyframes ma-rise {
+  from {
+    opacity: 0;
+    transform: translateY(12px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.animate-rise {
+  animation: ma-rise 320ms cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+  .animate-rise {
+    animation: none;
+  }
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+}
