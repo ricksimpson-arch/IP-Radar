@@ -18,6 +18,7 @@ research into clear, recurring business decisions.
 
 - Home: https://marketanalytica.com/
 - LootSignal case study (52 entertainment franchises scored across 7 dimensions): https://marketanalytica.com/work/lootsignal
+- SnowFlurry case study (300 television series ranked for merchandise and licensing opportunity): https://marketanalytica.com/work/snowflurry
 - Method (four phases): https://marketanalytica.com/method
 - Analytical standards: https://marketanalytica.com/method/standards
 - Engagement bands: https://marketanalytica.com/engagements
@@ -27,6 +28,7 @@ research into clear, recurring business decisions.
 
 ## Notes
 
-LootSignal is an independent research and analysis system. Franchise and brand
-names appear as subjects of market analysis; inclusion implies no affiliation
-with, endorsement by, or licensing rights from any rights holder.
+LootSignal and SnowFlurry are independent research and analysis systems.
+Franchise, series, and brand names appear as subjects of market analysis;
+inclusion implies no affiliation with, endorsement by, or licensing rights
+from any rights holder.
