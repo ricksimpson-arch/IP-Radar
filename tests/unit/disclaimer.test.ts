@@ -22,6 +22,19 @@ describe("IP disclaimer (SPEC §14.2)", () => {
     const headerEnd = source.indexOf("</header>");
     expect(source.indexOf('<DisclaimerBanner variant="ip" />')).toBeLessThan(headerEnd);
   });
+
+  it("matches the required language for SnowFlurry and renders above the fold on /work/snowflurry", () => {
+    expect(copy.legal.ipDisclaimerSnowFlurry).toBe(
+      "SnowFlurry is an independent research and analysis system. Television series and brand names appear as subjects of market analysis. Their inclusion does not imply affiliation with, endorsement by, or licensing rights from any rights holder.",
+    );
+    const source = readFileSync(
+      join(process.cwd(), "src/app/(marketing)/work/snowflurry/page.tsx"),
+      "utf8",
+    );
+    expect(source).toContain('<DisclaimerBanner variant="ip-snowflurry" />');
+    const headerEnd = source.indexOf("</header>");
+    expect(source.indexOf('<DisclaimerBanner variant="ip-snowflurry" />')).toBeLessThan(headerEnd);
+  });
 });
 
 describe("planner share-link round trip", () => {

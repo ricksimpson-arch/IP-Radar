@@ -64,6 +64,8 @@ export const copy = {
   legal: {
     ipDisclaimer:
       "LootSignal is an independent research and analysis system. Franchise and brand names appear as subjects of market analysis. Their inclusion does not imply affiliation with, endorsement by, or licensing rights from any rights holder.",
+    ipDisclaimerSnowFlurry:
+      "SnowFlurry is an independent research and analysis system. Television series and brand names appear as subjects of market analysis. Their inclusion does not imply affiliation with, endorsement by, or licensing rights from any rights holder.",
   },
   errors: {
     notFoundTitle: "That page doesn't exist.",

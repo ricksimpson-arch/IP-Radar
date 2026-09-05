@@ -17,6 +17,7 @@ const columns = [
     links: [
       { href: "/capabilities", label: copy.nav.capabilities },
       { href: "/work/lootsignal", label: "LootSignal case study" },
+      { href: "/work/snowflurry", label: "SnowFlurry case study" },
       { href: "/planner", label: "Project planner" },
       { href: "/apply", label: "Apply" },
     ],

@@ -9,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     "/capabilities",
     "/work",
     "/work/lootsignal",
+    "/work/snowflurry",
     "/method",
     "/method/standards",
     "/engagements",
