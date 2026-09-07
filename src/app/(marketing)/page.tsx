@@ -2,16 +2,35 @@ import Link from "next/link";
 import { copy } from "@/content/copy";
 import { capabilities } from "@/lib/data/capabilities";
 import { lootSignal } from "@/lib/data/caseStudy";
+import { snowFlurry } from "@/lib/data/snowFlurry";
 import { methodPhases, standards } from "@/lib/data/method";
 import { ButtonLink } from "@/components/ui/Button";
 import { Card } from "@/components/ui/Card";
 import { CTASection } from "@/components/ui/CTASection";
 import { Eyebrow } from "@/components/ui/Eyebrow";
 import { SectionHeader } from "@/components/ui/SectionHeader";
-import { StatBlock } from "@/components/ui/StatBlock";
 import { PlannerEntry } from "@/components/marketing/PlannerEntry";
 import { StickyApplyBar } from "@/components/marketing/StickyApplyBar";
 import { HeroDashboard } from "@/components/viz/HeroDashboard";
+
+const featuredCaseStudies = [
+  {
+    slug: lootSignal.slug,
+    eyebrow: lootSignal.eyebrow,
+    headline: "LootSignal: ranking 52 franchises for licensing decisions.",
+    question: lootSignal.question,
+    stats: lootSignal.stats,
+    asOf: "2026-07-01",
+  },
+  {
+    slug: snowFlurry.slug,
+    eyebrow: snowFlurry.eyebrow,
+    headline: "SnowFlurry: ranking 300 television series for merchandise opportunity.",
+    question: snowFlurry.question,
+    stats: snowFlurry.stats,
+    asOf: "2026-09-05",
+  },
+] as const;
 
 export default function HomePage() {
   return (
@@ -55,20 +74,39 @@ export default function HomePage() {
         </div>
       </section>
 
-      {/* Block 3 — Case study teaser */}
+      {/* Block 3 — Featured case studies */}
       <section className="section-pad border-t border-line bg-ink-800">
         <div className="container-site space-y-10">
           <SectionHeader
-            eyebrow={lootSignal.eyebrow}
-            title="LootSignal: ranking 52 franchises for licensing decisions."
-            lede={lootSignal.question}
+            eyebrow="Case studies · 2 published"
+            title="Systems we can show working."
+            lede="Both are internally-built research systems, published because every figure in them can be shown honestly."
           />
-          <div className="grid gap-4 sm:grid-cols-3">
-            {lootSignal.stats.map((stat) => (
-              <StatBlock key={stat.label} stat={stat} />
+          <div className="grid gap-4 lg:grid-cols-2">
+            {featuredCaseStudies.map((cs) => (
+              <Link key={cs.slug} href={`/work/${cs.slug}`} className="group">
+                <Card className="flex h-full flex-col transition-colors duration-120 group-hover:bg-ink-600">
+                  <p className="eyebrow-label data-figure text-faint">{cs.eyebrow}</p>
+                  <h3 className="mt-3 text-2xl">{cs.headline}</h3>
+                  <p className="mt-2 text-sm text-mute">{cs.question}</p>
+                  <div className="mt-auto grid grid-cols-3 gap-3 border-t border-line pt-4">
+                    {cs.stats.map((stat) => (
+                      <div key={stat.label}>
+                        <div className="data-figure text-2xl">{stat.value}</div>
+                        <div className="text-xs text-mute">{stat.label}</div>
+                      </div>
+                    ))}
+                  </div>
+                  <p className="data-figure mt-3 text-xs text-faint">
+                    All figures observed · as of {cs.asOf}
+                  </p>
+                </Card>
+              </Link>
             ))}
           </div>
-          <ButtonLink href="/work/lootsignal">{copy.home.caseStudyCta}</ButtonLink>
+          <ButtonLink href="/work" variant="secondary">
+            {copy.home.hero.secondaryCta}
+          </ButtonLink>
         </div>
       </section>
 
